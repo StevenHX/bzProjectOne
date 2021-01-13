@@ -1,0 +1,176 @@
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  -webkit-text-size-adjust: 100%;
+
+  //todo 通过媒体查询改表font-size的大小
+}
+
+
+
+
+body {
+  color: $primary-font-color;
+  font-family: $primary-font;
+  font-size: 1.6rem;
+  -moz-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  line-height: 1.4;
+  text-rendering: optimizeLegibility;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+
+  ::selection {
+    background: $primary-font-color;
+    color: $white;
+    text-shadow: none;
+  }
+}
+
+strong {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+blockquote,
+figure {
+  margin: 0;
+}
+
+blockquote {
+  .quote {
+    quotes: '“' '”' '‘' '’';
+
+    &::before {
+      content: open-quote;
+    }
+
+    &::after {
+      content: close-quote;
+    }
+  }
+}
+
+table {
+  padding: 0;
+}
+
+// 确认弹窗样式
+// .el-message-box{
+//   border: none;
+//   border-radius: 0;
+//   padding-bottom: 0;
+//   &.noFooter{
+//    ::v-deep .el-message-box__btns{
+//       display: none;
+//     }
+//   }
+//   .el-message-box__header{
+//     @include gradient-color();
+//     .el-message-box__title{
+//       color: $white;
+//       font-size: 1.4rem;
+//     }
+//     .el-message-box__headerbtn{
+//       .el-message-box__close{
+//         color: $white;
+//       }
+//     }
+//   }
+//   .el-message-box__content{
+//     padding: 25px 15px;
+//   }
+
+//   .el-message-box__btns{
+//     height: 4.4rem;
+//     background: #F0F0F0;
+//     border-top: border(1px, #D2D4D9);
+//     text-align: center;
+//     >.el-button{
+//       position: relative;
+//       border-radius: 0;
+//       width: 70px;
+//       border:0;
+//       &:first-child{
+//         left: 86px!important;
+//         background: colorGrey(2);
+//         color: $white;
+//       }
+//       &:last-child{
+//         left: -86px!important;
+//       }
+//     }
+//   }
+// }
+//默认按钮样式
+.el-button--default.btn{
+  height:36px;
+  line-height: 36px;
+  padding:0 15px;
+  border-radius:2px;
+  font-size:14px;
+  &.minH{
+    height:30px;
+    line-height: 30px;
+  }
+  i{
+    margin-right: 2px;
+  }
+  &:hover{
+    background-color:transparent ;
+  }
+  &.btn-green{
+    background:$primary;
+    color:#fff;
+    border:0;
+    &:hover{
+      background:$primary;
+      color:#fff;
+    }
+  }
+}
+//面包屑
+.el-main .breadcrumb-wrapper{
+  border-bottom:1px solid #D2D4D9;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0) !important;
+}
+//隐藏授权码
+#hot-display-license-info{
+  width: 0;
+  height: 0;
+  display: none;
+}
+//提示
+.el-notification{
+  display: flex;
+  align-items: center;
+}

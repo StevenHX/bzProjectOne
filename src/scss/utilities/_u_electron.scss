@@ -1,0 +1,13 @@
+//可拖动区域
+.electron-drag{
+  -webkit-app-region: drag;
+}
+
+.electron-no-drag{
+  -webkit-app-region: no-drag;
+}
+
+//浮窗提醒可操作 禁止拖动
+.el-message,.el-notification  {
+  @extend .electron-no-drag
+}
