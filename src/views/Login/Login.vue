@@ -12,6 +12,7 @@
             </div>
         </div>
         <el-button @click="clickLogin">登录</el-button>
+            <span v-if="isShowMsg" class="login-input-msg">{{noticeMsg}}</span>
   </div>
 </template>
 
@@ -20,6 +21,7 @@
     import {Getter, Action, Mutation, namespace} from 'vuex-class';
     import {api} from '@/api';
     import _ from 'lodash';
+    import { getStorage, setStorage} from "@/util/utils";
 
     @Component({
         name: 'login',
@@ -28,13 +30,27 @@
 
     export default class Devices extends Vue {
         url:string = require('@/assets/images/bg.jpg');
+        noticeMsg:any = '';
+        isShowMsg:boolean = false;
         account:any = '';
         passWord:any = '';
         clickLogin() {
+          this.isShowMsg = false;
+          if (!this.account) {
+            this.noticeMsg = '用户名为空';
+            this.isShowMsg = true;
+            return;
+          }
+          if (!this.passWord) {
+            this.noticeMsg = '密码为空';
+            this.isShowMsg = true;
+            return;
+          }
           api.login(this.account,this.passWord)
           .then((res:any) =>{
             console.log(res);
-            this.$router.push({path: '/Attendances/EquipList'});
+            setStorage('token','123')
+            this.$router.replace({path: '/Attendances/EquipList'});
           })
         }
     }
@@ -58,8 +74,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 100px;
-        justify-content: space-between;
+        // height: 100px;
+        // justify-content: space-between;
         .login-input-item{
             background: white;
             width: 300px;
@@ -70,11 +86,18 @@
             font-size: 20px;
             padding-left: 5px;
             padding-right: 5px;
+            margin-top: 10px;
             ::v-deep .el-input__inner {
                 border-color: transparent !important;
             }
         }
+        
     }
+    .login-input-msg{
+          margin-top: 4px;
+          color: red;
+          font-size: 14px;
+        }
     ::v-deep .el-button{
         width: 300px !important;
         height: 40px !important;

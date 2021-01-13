@@ -61,7 +61,7 @@ const setInterceptors = (instance: AxiosInstance) => {
         }
         if (error && error.response) {
             if (error.response.status == 401) {
-                router.push({ path: '/login'});
+                router.replace({ path: '/login'});
             }
         }
 

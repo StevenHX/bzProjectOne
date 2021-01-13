@@ -178,7 +178,7 @@
         async handleCommand(commond:any) {
             if (commond === 'quit') {
                 setStorage('token','');
-                this.$router.push({ path: '/login'});
+                this.$router.replace({ path: '/login'});
             }
         }
 
