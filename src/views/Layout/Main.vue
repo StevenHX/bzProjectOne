@@ -194,7 +194,7 @@
                 setStorage('token',token);
             }
             if(! getStorage('token')) {
-                // this.$router.push({ pa th: '/login'});
+                this.$router.push({ path: '/login'});
             }
         }
 

@@ -14,6 +14,7 @@
       @on-change="queryList"
       @on-enter-click="queryList"
       @on-clear-click="queryList"
+      @onDownMp4="onDownMp4"
     >
       <template slot="left">
         <div class="l-t">驱鸟历史</div>
@@ -88,11 +89,22 @@ export default class Devices extends Vue {
       {
         data: 'VideoUrl',
         name: '视频',
-        type: 'text',
-        readOnly: true,
+        mold: 'button',
+        items: [
+          {
+            tip:'下载视频',
+            emit:'onDownMp4',
+            icon:'el-icon-download',
+            circle:true,
+          }
+        ]
       }
     ],
   };
+
+  onDownMp4(e:any){
+    console.log(e);
+  }
 
   async queryList(pageNum?: any) {
     this.loading = true;
