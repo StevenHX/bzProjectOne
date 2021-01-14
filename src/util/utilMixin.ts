@@ -1,5 +1,4 @@
 /**
- * Created by zhangbin on 2020/5/27.
  * 工具和常用常量混入
  */
 import Vue from "vue";

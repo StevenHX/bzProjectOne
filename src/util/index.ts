@@ -1,7 +1,3 @@
-/**
- * Created by zhangbin on 2020/5/27.
- */
-
 import {Vue} from 'vue-property-decorator';
 import _ from 'lodash';
 type options = {

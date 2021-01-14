@@ -1,7 +1,3 @@
-/**
- * Created by zhangbin on 2020/5/27.
- */
-
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css';
 

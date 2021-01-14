@@ -1,7 +1,3 @@
-/**
- * Created by zhangbin on 2020/5/27.
- * 令牌工具
- */
 import * as cookie from 'tiny-cookie'
 import {getConfig} from './config';
 

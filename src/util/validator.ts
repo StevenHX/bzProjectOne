@@ -1,5 +1,4 @@
 /**表单验证
- * Created by zhangbin on 2020/7/10.
  */
 
 const rules = {

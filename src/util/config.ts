@@ -1,8 +1,3 @@
-/**
- * Created by zhangbin on 2020/5/27.
- * 存储配置项
- */
-
 interface setting {
     //是否区分内外网
     isDiff?: boolean,

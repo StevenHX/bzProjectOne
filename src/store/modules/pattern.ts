@@ -1,7 +1,3 @@
-/**
- * Created by zhangbin on 2020/5/27.
- * 公用正则表达式
- */
 import {VuexModule, Module} from 'vuex-module-decorators';
 
 @Module({name: 'pattern', namespaced: true})
