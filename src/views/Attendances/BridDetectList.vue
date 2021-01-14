@@ -14,6 +14,7 @@
       @on-change="queryList"
       @on-enter-click="queryList"
       @on-clear-click="queryList"
+      @onUpMp4="onUpMp4"
       @onDownMp4="onDownMp4"
       @onViewMp4="onViewMp4"
     >
@@ -96,6 +97,12 @@ export default class Devices extends Vue {
         mold: "button",
         items: [
           {
+            tip: "上传视频",
+            emit: "onUpMp4",
+            icon: "el-icon-upload2",
+            circle: true,
+          },
+          {
             tip: "下载视频",
             emit: "onDownMp4",
             icon: "el-icon-download",
@@ -112,17 +119,46 @@ export default class Devices extends Vue {
     ],
   };
 
+  onUpMp4(e:any) {
+    api.VideoReqUpload({
+      data: {
+        ID: e.ID,
+        VideoReqStatus:e.VideoReqStatus
+      }
+    }).then((res:any) =>{
+      if (res.result.Result === 1) {
+         this.$notify({
+          title: '成功',
+          message: '上传成功',
+          type: 'success'
+        });
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: '上传失败'
+          });
+      }
+        this.queryList();
+    })
+    // this.list.data.forEach((item:any) => {
+    //   if (item.ID === e.ID) {
+    //     item.VideoStatus = -1;
+    //     return;
+    //   }
+    // });
+    // this.settings.data = this.list.data;
+  }
   onDownMp4(e: any) {
-    console.log(e);
     NProgress.start();
-    downloadFile('get','/big_buck_bunny.mp4','','test.mp4')
+    downloadFile('get',"/" + e.VideoUrl,'', 'Video.mp4')
     .finally(()=>{
       NProgress.done();
     });
   }
 
   onViewMp4(e:any) {
-    window.open("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+    // window.open("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+    window.open(process.env.VUE_APP_URL + "/" + e.VideoUrl);
   }
 
   formatDateTime = function (date: any) {

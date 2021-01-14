@@ -14,7 +14,7 @@ proxy[process.env['VUE_APP_SERVICE_PATH']] = {
 };
 
 proxy[process.env['VUE_APP_SERVICE_VIDEO_PATH']] = {
-    target: process.env['VUE_APP_SERVICE_VIDEO_URL'],
+    target: process.env['VUE_APP_SERVICE_URL'],
     ws: true,
     changeOrigin: true
 };

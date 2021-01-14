@@ -5,7 +5,7 @@ import instance from './instance';
 function login(name:any,pwd:any) {
   let i = instance({
     method: 'get',
-    url:  '/BSAPI/Action/Login?Name='+name+'&Password='+pwd,
+    url:  '/BSAPI/Login/Login?Name='+name+'&Password='+pwd,
   });
   return (i as Promise<unknown>)
 }
@@ -39,9 +39,20 @@ function GetPatrolList(opts?:AxiosRequestConfig) {
   });
   return (i as Promise<unknown>)
 }
+
+// 调用设备上传视频
+function VideoReqUpload(opts?:AxiosRequestConfig) {
+  let i = instance({
+    method: 'post',
+    url:  '/BSAPI/Action/VideoReqUpload',
+    opts: opts
+  });
+  return (i as Promise<unknown>)
+}
 export {
   login,
   GetEquipList,
   GetBridDetectList,
-  GetPatrolList
+  GetPatrolList,
+  VideoReqUpload
 };

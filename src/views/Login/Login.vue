@@ -8,7 +8,7 @@
             </div>
             <div class="login-input-item">
                 <i class="el-icon-lock"></i>
-                <el-input v-model="passWord" placeholder="请输入内容"></el-input>
+                <el-input v-model="passWord" placeholder="请输入内容" type="password" show-password></el-input>
             </div>
         </div>
         <el-button @click="clickLogin">登录</el-button>
@@ -48,8 +48,8 @@
           }
           api.login(this.account,this.passWord)
           .then((res:any) =>{
-            setStorage('token','123')
-            setStorage('loginInfo',res.result)
+            setStorage('token',res.result.Token)
+            setStorage('loginInfo',res.result)  
             this.$router.replace({path: '/Attendances/EquipList'});
           })
         }
