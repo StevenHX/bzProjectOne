@@ -1,26 +1,13 @@
 <template>
-    <div class="wt-table">
-        <div class="wt-table-sub-menu"
-            v-if="showSubMenu"
-            :style="{'width':subMenuWidth}">
-            <table-tree
-                :subMenuData="this.subMenuData"
-                subMenuNodeKey="id"
-                :subMenuNodeName="subMenuNodeName"
-                :treeSetting="treeSetting"
-                :isSingleCheck="isSingleCheck"
-                :highlightCurrent="highlightCurrent"
-                @on-tree-check="onTreeCheck"
-                @on-tree-more="onTreeMore"
-                @on-machine-check="onMachineCheck">
-            </table-tree>
+    <div class="bz-table">
+        <div class="bz-table-sub-menu">
         </div>
-        <div class="wt-table-body">
-            <div v-if="searchSetting.length" class="wt-tb-search clear">
+        <div class="bz-table-body">
+            <div v-if="searchSetting.length" class="bz-tb-search clear">
                 <el-form ref="search"
                         :inline="true"
                         @submit.native.prevent
-                        class="wt-tb-search-wrapper elementui-custom">
+                        class="bz-tb-search-wrapper elementui-custom">
                     <template v-for="item in searchSetting">
                         <br v-if="item.type==='br'" :key="item.key">
                         <el-form-item v-if="item.type !=='br'" :label="item.label"
@@ -57,39 +44,39 @@
                     </template>
                     <slot name="search"></slot>
                     <el-form-item>
-                        <el-button type="primary" icon="el-icon-search" @click="onSearch" class="wt-tb-search-btn">查询</el-button>
+                        <el-button type="primary" icon="el-icon-search" @click="onSearch" class="bz-tb-search-btn">查询</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button @click="onReset" class="wt-tb-search-btn">重置</el-button>
+                        <el-button @click="onReset" class="bz-tb-search-btn">重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>
 
-            <div class="wt-tb-title" v-if="$slots.left||$slots.right">
-                <div class="wt-tb-title-left">
+            <div class="bz-tb-title" v-if="$slots.left||$slots.right">
+                <div class="bz-tb-title-left">
                     <slot name="left-machine"></slot>
                     <slot name="left"></slot>
                 </div>
-                <div class="wt-tb-title-right">
+                <div class="bz-tb-title-right">
                     <template v-if="showEdit">
                         <el-button v-if="!isEdit"
                                 :disabled="!total"
                                 @click="onEdit"
                                 plain
-                                class="wt-tb-edit-btn"
+                                class="bz-tb-edit-btn"
                                 icon="el-icon-edit">编辑
                         </el-button>
                         <el-button v-if="isEdit"
                                 type="success"
                                 @click="onSave"
-                                class="wt-tb-edit-btn"
+                                class="bz-tb-edit-btn"
                                 icon="el-icon-document-add">保存
                         </el-button>
                     </template>
                     <template v-if="showExport">
                         <el-button
                             @click="onExport"
-                            class="wt-tb-edit-btn"
+                            class="bz-tb-edit-btn"
                             icon="el-icon-document">导出
                         </el-button>
                     </template>
@@ -97,17 +84,17 @@
                 </div>
             </div>
 
-            <el-form class="wt-tb-elForm" :model="hotSettings" ref="tableForm" label-width="0px">
-                <div class="wt-tb-wrapper">
-                    <div class="wt-tb-list"
+            <el-form class="bz-tb-elForm" :model="hotSettings" ref="tableForm" label-width="0px">
+                <div class="bz-tb-wrapper">
+                    <div class="bz-tb-list"
                         v-loading="loading">
-                        <hot-table ref="wtHot"
+                        <hot-table ref="bzHot"
                                 :root="root"
                                 :settings="hotSettings"
                                 v-show="settings.data.length"></hot-table>
                         <div class="noData" v-if="!total">暂无数据</div>
                     </div>
-                    <el-row class="wt-tb-pagination" v-show="total&&hidePaging!==true">
+                    <el-row class="bz-tb-pagination" v-show="total&&hidePaging!==true">
                         <el-col :span="24">
                             <el-pagination
                                     background
@@ -122,12 +109,12 @@
                         </el-col>
                     </el-row>
                 </div>
-                <div class="wt-tb-custom" v-if="hotSettings.columns&&hotSettings.columns.length">
+                <div class="bz-tb-custom" v-if="hotSettings.columns&&hotSettings.columns.length">
                     <div v-for="(res, index) in columnsSub('button')" :key="'res.data' + index">
                         <div v-for="(btem, index) in hotSettings.data"
                             :key="'btem.Id' + index"
                             :ref="res.data+btem[ListId]"
-                            class="wt-tb-custom-button">
+                            class="bz-tb-custom-button">
                             <el-form-item v-for="ptem in res.items"
                                         :key="ptem.emit">
                                 <el-tooltip class="item" effect="dark" :content="ptem.tip" placement="top">
@@ -274,7 +261,7 @@
                 </div>
             </el-form>
         </div>
-        <div class="wt-table-drawer" v-if="true">
+        <div class="bz-table-drawer" v-if="true">
             <table-drawer
                 :isAddDrawer="isAddDrawer"
                 :formDrawerOpen="formDrawerOpen"
@@ -309,7 +296,7 @@
     export default class TableList extends Vue {
         public $refs!: {
             search: HTMLFormElement,
-            wtHot: HTMLFormElement,
+            bzHot: HTMLFormElement,
             tableForm: HTMLFormElement,
             cascader: HTMLFormElement
         };
@@ -334,28 +321,6 @@
             default: 'id'
         })
         ListId!: any;
-
-        @Prop({
-            type: Boolean,
-            default: true
-        })
-        highlightCurrent!: false;
-
-        @Prop({
-            type: Boolean,
-            default: false
-        })
-        isSingleCheck!: false;
-
-        @Prop({
-            type: Object,
-            default: () => {
-                return {}
-            }
-        })
-        treeSetting!: any;
-
-        subMenuNodeName: any = ["groupName"];
         @Prop({
             type: Array,
             default: () => {
@@ -363,26 +328,6 @@
             }
         })
         imgPreviewList!: any;
-        @Prop({
-            type: Array,
-            default: () => {
-                return [];
-            }
-        })
-        subMenuData!: any;
-
-        @Prop({
-            type: Boolean,
-            default: false
-        })
-        showSubMenu!: boolean;
-
-        @Prop({
-            type: String,
-            default: '200px'
-        })
-        subMenuWidth!: any;
-
         //加载动画
         @Prop({
             type: Boolean,
@@ -506,7 +451,7 @@
         isEdit: boolean = false;
         pageSize: number = 10;
         current: number = 1;
-        root: string = 'wt-hot';
+        root: string = 'bz-hot';
         isCheckAll: boolean = false;
         hotSettings: any = {};
         cascaderList: any = {};
@@ -577,7 +522,7 @@
         })
         watchSettingsHiddenColumns(data: any) {
             this.$set(this.hotSettings, 'hiddenColumns', data)
-            this.$refs.wtHot.hotInstance.updateSettings({
+            this.$refs.bzHot.hotInstance.updateSettings({
                 hiddenColumns: this.hotSettings.hiddenColumns
             });
         }
@@ -615,7 +560,7 @@
         }
 
         onExport() {
-            const exportPlugin = this.$refs.wtHot.hotInstance.getPlugin('exportFile');
+            const exportPlugin = this.$refs.bzHot.hotInstance.getPlugin('exportFile');
             exportPlugin.downloadFile('csv', {
                 bom: 'UTF-8', // 允许您使用BOM签名导出数据。
                 columnDelimiter: ',', // 允许您定义列分隔符。
@@ -650,7 +595,7 @@
                                 }
                             });
                         }
-                        let wtAll: any = ary.map((res: any) => {
+                        let bzAll: any = ary.map((res: any) => {
                             let obj: any = {};
                             _.forOwn(field, (item, key) => {
                                 this.$set(obj, key, res[key])
@@ -658,7 +603,7 @@
                             return obj;
                         });
                         let pushObj = {};
-                        this.$set(pushObj,this.savePushKey,wtAll);
+                        this.$set(pushObj,this.savePushKey,bzAll);
                         api[this.saveApi]({
                             data: pushObj
                         })
@@ -711,14 +656,14 @@
                 this.hotSettings.data.map((item: any) => {
                     this.$set(item, 'IsCheck', data);
                 });
-                this.$refs.wtHot.hotInstance.updateSettings({
+                this.$refs.bzHot.hotInstance.updateSettings({
                     data: this.hotSettings.data
                 });
             }
         }
 
         upDateSetting() {
-            this.$refs.wtHot.hotInstance.updateSettings({
+            this.$refs.bzHot.hotInstance.updateSettings({
                 data: this.hotSettings.data
             });
         }
@@ -742,17 +687,6 @@
                 this.openDrawer(false,row,item);
             }
             this.$emit(row.emit, item);
-        }
-
-        onTreeCheck(row: any) {
-            this.$emit('on-tree-check',row);
-        }
-
-        onTreeMore(row:any) {
-            this.$emit('on-tree-more', row);
-        }
-        onMachineCheck(data:any) {
-            this.$emit('on-machine-check', data);
         }
 
         //input修改
@@ -791,7 +725,7 @@
                     }
                 }
             })
-            this.$refs.wtHot.hotInstance.updateSettings({
+            this.$refs.bzHot.hotInstance.updateSettings({
                 columns: this.hotSettings.columns
             });
         }
@@ -833,7 +767,7 @@
                         div.style.textAlign = 'center';
                         itemRow.items.map((item: any) => {
                             let btn: any = document.createElement('button');
-                            btn.className = 'el-button wt-tb-search-btn el-button--' + item.type + ' el-button--mini';
+                            btn.className = 'el-button bz-tb-search-btn el-button--' + item.type + ' el-button--mini';
                             btn.setAttribute('type', 'button');
                             btn.insertAdjacentHTML('afterbegin', item.name);
                             btn.onclick = () => {
@@ -931,26 +865,26 @@
 </script>
 
 <style scoped lang="scss">
-    .wt-tb-search-wrapper ::v-deep   input::-webkit-outer-spin-button,
-    .wt-tb-search-wrapper ::v-deep   input::-webkit-inner-spin-button {
+    .bz-tb-search-wrapper ::v-deep   input::-webkit-outer-spin-button,
+    .bz-tb-search-wrapper ::v-deep   input::-webkit-inner-spin-button {
         -webkit-appearance: none;
     }
-    .wt-tb-search-wrapper ::v-deep   input[type="number"]{
+    .bz-tb-search-wrapper ::v-deep   input[type="number"]{
         -moz-appearance: textfield;
     }
-     .wt-table {
-        .wt-tb-search {
+     .bz-table {
+        .bz-tb-search {
             font-size: 12px;
         }
 
-        .wt-tb-title {
+        .bz-tb-title {
             min-height: 36px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin: 10px 0;
 
-            .wt-tb-title-left {
+            .bz-tb-title-left {
                 font-size: 14px;
                 display: flex;
 
@@ -960,16 +894,16 @@
                 }
             }
 
-            .wt-tb-title-right {
+            .bz-tb-title-right {
                 display: flex;
                 justify-content: center;
                 align-items: center;
 
-                .wt-tb-title-right-selAll {
+                .bz-tb-title-right-selAll {
                         position: relative;
                         top: 1px;
 
-                        ::v-deep .wt-tb-title-right-selAll-checkbox {
+                        ::v-deep .bz-tb-title-right-selAll-checkbox {
                             width: 28px;
 
                             &:hover {
@@ -980,7 +914,7 @@
                             }
 
                             &.is-checked {
-                                .wt-tb-title-right-sel {
+                                .bz-tb-title-right-sel {
                                     color: $white;
                                 }
                             }
@@ -996,7 +930,7 @@
                             }
                         }
 
-                        .wt-tb-title-right-sel {
+                        .bz-tb-title-right-sel {
                             width: 28px;
                             height: 28px;
                             line-height: 28px;
@@ -1017,14 +951,14 @@
                     }
 
 
-                .wt-tb-edit-btn {
+                .bz-tb-edit-btn {
                     height: 29px;
                     margin-left: 10px;
                 }
             }
         }
 
-        .wt-tb-elForm {
+        .bz-tb-elForm {
             ::v-deep .el-form-item {
                 margin-bottom: 0 !important;
 
@@ -1040,9 +974,9 @@
             }
         }
 
-        .wt-tb-wrapper {
-            .wt-tb-list {
-                ::v-deep .handsontable[root='wt-hot'] {
+        .bz-tb-wrapper {
+            .bz-tb-list {
+                ::v-deep .handsontable[root='bz-hot'] {
                     font-size: 14px;
 
                     td {
@@ -1050,7 +984,7 @@
                         vertical-align: middle;
                         position: relative;
 
-                        .wt-tb-custom-btem {
+                        .bz-tb-custom-btem {
                             width: calc(100% + 8px);
                             margin-left: -4px;
 
@@ -1059,7 +993,7 @@
                             }
                         }
 
-                        .wt-tb-custom-btem:not(:last-child) {
+                        .bz-tb-custom-btem:not(:last-child) {
                             margin-right: 5px;
                         }
                     }
@@ -1081,13 +1015,13 @@
                             }
                         }
 
-                        .wtHolder {
-                            width: 100% !important;
-                        }
+                        // .wtHolder {
+                        //     width: 100% !important;
+                        // }
 
-                        .wtHider {
-                            width: 100% !important;
-                        }
+                        // .wtHider {
+                        //     width: 100% !important;
+                        // }
                     }
 
                     > .ht_clone_top, > .ht_clone_top_left_corner, > .ht_clone_left {
@@ -1119,11 +1053,11 @@
                         }
                     }
 
-                    .wtBorder {
-                        &.corner {
-                            border-width: 0 !important;
-                        }
-                    }
+                    // .wtBorder {
+                    //     &.corner {
+                    //         border-width: 0 !important;
+                    //     }
+                    // }
                 }
 
                 ::v-deep {
@@ -1188,7 +1122,7 @@
 
                 }
 
-                .wt-tb-custom-button{
+                .bz-tb-custom-button{
                     display: flex;
                     flex: 1;
                     align-items: center;
@@ -1214,7 +1148,7 @@
                 }
             }
 
-            .wt-tb-pagination {
+            .bz-tb-pagination {
                 text-align: right;
                 padding-top: 50px;
 
@@ -1224,7 +1158,7 @@
             }
         }
 
-        .wt-tb-custom {
+        .bz-tb-custom {
             width: 0;
             height: 0;
             display: none;

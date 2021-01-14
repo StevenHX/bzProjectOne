@@ -1,7 +1,7 @@
 <template>
-    <div :class="['wt-menu',{'wt-menu-iscollapse':isCollapse}]">
+    <div :class="['l-menu',{'l-menu-iscollapse':isCollapse}]">
         <template v-for="(item) in leftMenu">
-            <el-submenu popper-class="wt-submenu-popper" :index="item.path" :key="item.name" v-if="item.meta&&item.meta.isExpand">
+            <el-submenu popper-class="bz-submenu-popper" :index="item.path" :key="item.name" v-if="item.meta&&item.meta.isExpand">
                 <template slot="title">
                     <i :class="item.icon"></i>
                     <span slot="title">{{item.name}}</span>
@@ -9,9 +9,9 @@
                 <l-menu :left-menu="item.children" :isCollapse="isCollapse" @toPage="toPage"></l-menu>
             </el-submenu>
             <el-menu-item :index="item.path"
-                          :key="item.name"
-                          @click="toPage(item.path)"
-                          v-else-if="item.meta&&item.meta.isMenu">
+                :key="item.name"
+                @click="toPage(item.path)"
+                v-else-if="item.meta&&item.meta.isMenu">
                 <i :class="item.icon"></i>
                 <span slot="title">{{item.name}}</span>
             </el-menu-item>
@@ -48,7 +48,7 @@
 </script>
 
 <style scoped lang="scss">
-    .wt-menu {
+    .l-menu {
         background-color:#f5f5f5;
         ::v-deep .el-submenu__title {
             color: $grey-dark;
@@ -62,7 +62,7 @@
             background-color: inherit;
         }
 
-        &.wt-menu-iscollapse {
+        &.l-menu-iscollapse {
             ::v-deep .el-submenu__title, .el-menu-item {
                 color: $grey-dark;
                 &:hover {
@@ -75,7 +75,7 @@
             }
         }
 
-        .wt-submenu-popper{
+        .bz-submenu-popper{
             ::v-deep .el-submenu__title, .el-menu-item {
                 background-color: $white;
             }
@@ -96,8 +96,8 @@
             }
 
             &.is-active {
-                color: $black;
-                @include gradient-color();
+                color: $white;
+                @include gradient-color-tb(#224157, #40566b);
                 box-shadow: 0px 1px 10px 0 rgba(0, 0, 0, 0.1);
                 transition: 0s;
                 position: relative;

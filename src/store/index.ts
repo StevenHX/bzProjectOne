@@ -68,7 +68,6 @@ class VuexStore extends VuexModule {
     @Mutation
     public setLoginInfo(info: any = {}) {
         this.LOGIN_INFO = info;
-        //todo 判断特殊身份权限标记
     }
 
     @Mutation
@@ -83,20 +82,17 @@ class VuexStore extends VuexModule {
 
     @Action({rawError: true})
     public async syncEnum() {
-        let data = (await api.Dictionary_GetDictJson()).Data;
-        this.context.commit('setEnums', data)
+        this.context.commit('setEnums', '')
     }
 
     @Action({rawError: true})
     public async syncOrg() {
-        let data = (await api.Dictionary_GetAll());
-        this.context.commit('setOrg', data)
+        this.context.commit('setOrg', '')
     }
 
     @Action({rawError: true})
     public async syncLoginInfo() {
-        let data = (await api.Session_GetUserConfigurations('Attendances'));
-        this.context.commit('setLoginInfo', data)
+        this.context.commit('setLoginInfo', '')
     }
 }
 

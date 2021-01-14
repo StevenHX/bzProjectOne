@@ -1,9 +1,9 @@
 {
-  "name": "wt-template-admin",
+  "name": "bz-template-admin",
   "version": "0.0.1",
   "private": true,
   "description": "后台管理模板",
-  "author": "Wingtech",
+  "author": "bz",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build:pst": "vue-cli-service build  --mode=pst",

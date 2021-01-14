@@ -1,12 +1,12 @@
 <template>
-    <div class="wt-el-drawer">
+    <div class="bz-el-drawer">
         <el-drawer
             :size="formDrawerSize"
             :title="isAddDrawer?'新增':'编辑'"
             :visible.sync="formDrawerOpen"
             :show-close="false"
             :before-close="close">
-            <el-form class="wt-el-drawer-form"
+            <el-form class="bz-el-drawer-form"
                 :model="formData"
                 ref="tableForm"
                 v-loading="Loading&&!isAddDrawer"
@@ -56,7 +56,7 @@
                         </template>
                     </el-form-item>
                 </div>
-                <el-form-item class="wt-el-drawer-footer">
+                <el-form-item class="bz-el-drawer-footer">
                     <el-button type="primary" :loading="saveLoading" @click="submitForm()">确定</el-button>
                     <el-button @click="close()">取消</el-button>
                 </el-form-item>
@@ -85,12 +85,6 @@
 
         @State('ENUMS')
         ENUMS!: any;
-
-        @State('ORG')
-        ORG!: any;
-
-        @State('POSITION')
-        POSITION!: any;
 
         @Prop({
             type: String,
@@ -227,7 +221,7 @@
 </script>
 
 <style scoped lang="scss">
-    .wt-el-drawer {
+    .bz-el-drawer {
         ::v-deep .el-drawer {
             .el-drawer__header {
                 border-bottom: 1px solid $bd;
@@ -261,7 +255,7 @@
             }
         }
 
-        .wt-el-drawer-form {
+        .bz-el-drawer-form {
             padding-right: 30px;
 
             ::v-deep .el-input {
@@ -282,7 +276,7 @@
                 }
             }
 
-            .wt-el-drawer-footer {
+            .bz-el-drawer-footer {
                 width: calc(100% + 30px);
                 height: 50px;
                 background-color: $white;

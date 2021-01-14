@@ -1,13 +1,13 @@
 <template>
-    <el-container id="container" :class="{'wt-aside-iscollapse':isCollapse}">
+    <el-container id="container" :class="{'bz-aside-iscollapse':isCollapse}">
         <el-header>
-            <div class="wt-aside-util">
-                <div class="wt-logo">{{appName}}</div>
+            <div class="bz-aside-util">
+                <div class="bz-logo">{{appName}}</div>
             </div>
-            <div class="wt-aside-collapse" @click="onCollapse" :title="isCollapse?'展开':'收起'">
-                <i :class="['wt-aside-icon',isCollapse?'el-icon-s-unfold':'el-icon-s-fold']"></i>
+            <div class="bz-aside-collapse" @click="onCollapse" :title="isCollapse?'展开':'收起'">
+                <i :class="['bz-aside-icon',isCollapse?'el-icon-s-unfold':'el-icon-s-fold']"></i>
             </div>
-            <div class="wt-user" v-if="LOGIN_INFO.CurrentLanguageName">
+            <div class="bz-user" v-if="LOGIN_INFO.CurrentLanguageName">
                     <el-dropdown @command="handleCommand">
                         <span class="el-dropdown-link">
                             <el-avatar  icon="el-icon-user-solid"></el-avatar>
@@ -30,7 +30,7 @@
                     <l-menu :left-menu="leftMenu" :isCollapse="isCollapse" @toPage="toPage"></l-menu>
                 </el-menu>
             </el-aside>
-            <el-container class="wt-container">
+            <el-container class="bz-container">
                 <el-main ref="main" class="scrollBar-warp">
                     <div class="breadcrumb-wrapper">
                         <el-breadcrumb separator="/">
@@ -41,7 +41,7 @@
                             </el-breadcrumb-item>
                         </el-breadcrumb>
                     </div>
-                    <div class="wt-main" v-if="CurrentLanguageName">
+                    <div class="bz-main" v-if="CurrentLanguageName">
                         <keep-alive>
                             <router-view-anim v-if="$route.meta.keepAlive"></router-view-anim>
                         </keep-alive>
@@ -216,8 +216,8 @@
         overflow: hidden;
 
         //收起状态的操作栏
-        &.wt-aside-iscollapse {
-            ::v-deep .wt-menu {
+        &.bz-aside-iscollapse {
+            ::v-deep .bz-menu {
                 .el-submenu__title {
                     span {
                         display: none;
@@ -225,7 +225,7 @@
                 }
             }
 
-            .wt-container {
+            .bz-container {
                 width: calc(100% - 64px) !important;
                 left: 64px !important;
             }
@@ -242,21 +242,21 @@
                 // justify-content: space-between;
 
 
-            .wt-aside-util {
+            .bz-aside-util {
                 width: 180px;
                 font-size: 20px;
 
-                .wt-logo {
+                .bz-logo {
                     // text-shadow: 1px 2px 1px rgba(#fff, .3);
                     color: $white;
                     font-weight: bold;
                 }
             }
 
-            .wt-aside-collapse {
+            .bz-aside-collapse {
                 cursor: pointer;
 
-                .wt-aside-icon {
+                .bz-aside-icon {
                     color: $white;
                     font-size: 20px;
 
@@ -266,7 +266,7 @@
                 }
             }
 
-            .wt-user {
+            .bz-user {
                     display: flex;
                     flex: 1;
                     justify-content: flex-end;
@@ -330,7 +330,7 @@
             }
 
             //主体
-            .wt-container {
+            .bz-container {
                 width: calc(100% - 200px);
                 height: 100%;
                 position: absolute;
@@ -356,7 +356,7 @@
                     }
 
                     //页面
-                    .wt-main {
+                    .bz-main {
                         width: 100%;
                         height: calc(100% - 50px);
                         margin-top: 50px;

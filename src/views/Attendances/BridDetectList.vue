@@ -24,14 +24,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Getter, Action, Mutation, namespace } from 'vuex-class';
-import { api } from '@/api';
-import _ from 'lodash';
-import { dateFormat } from '@/util/utils';
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { Getter, Action, Mutation, namespace } from "vuex-class";
+import { api } from "@/api";
+import _ from "lodash";
+import { dateFormat } from "@/util/utils";
 
 @Component({
-  name: 'Devices',
+  name: "Devices",
   components: {},
 })
 export default class Devices extends Vue {
@@ -69,47 +69,62 @@ export default class Devices extends Vue {
     data: [],
     columns: [
       {
-        data: 'ID',
-        name: 'ID',
-        type: 'text',
+        data: "ID",
+        name: "ID",
+        type: "text",
         readOnly: true,
       },
       {
-        data: 'CreateTime',
-        name: '创建时间',
-        type: 'text',
+        data: "CreateTime",
+        name: "创建时间",
+        type: "text",
         readOnly: true,
       },
       {
-        data: 'ImageUrl',
-        name: '图像',
-        mold: 'img',
+        data: "ImageUrl",
+        name: "图像",
+        mold: "img",
         readOnly: true,
       },
       {
-        data: 'VideoUrl',
-        name: '视频',
-        mold: 'button',
+        data: "VideoUrl",
+        name: "视频",
+        mold: "button",
         items: [
           {
-            tip:'下载视频',
-            emit:'onDownMp4',
-            icon:'el-icon-download',
-            circle:true,
-          }
-        ]
-      }
+            tip: "下载视频",
+            emit: "onDownMp4",
+            icon: "el-icon-download",
+            circle: true,
+          },
+        ],
+      },
     ],
   };
 
-  onDownMp4(e:any){
+  onDownMp4(e: any) {
     console.log(e);
   }
 
+  formatDateTime = function (date: any) {
+    var y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    m = m < 10 ? "0" + m : m;
+    var d = date.getDate();
+    d = d < 10 ? "0" + d : d;
+    var h = date.getHours();
+    h = h < 10 ? "0" + h : h;
+    var minute = date.getMinutes();
+    minute = minute < 10 ? "0" + minute : minute;
+    var second = date.getSeconds();
+    second = second < 10 ? "0" + second : second;
+    return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
+  };
   async queryList(pageNum?: any) {
     this.loading = true;
     this.query.pageNum = pageNum ? pageNum : 1;
-    await api.GetBridDetectList({
+    await api
+      .GetBridDetectList({
         data: {
           Page: {
             PageNum: this.query.pageNum,
@@ -117,16 +132,16 @@ export default class Devices extends Vue {
           },
           Query: {
             CompanyID: 1,
-            EquipKey: '20210104TST',
+            EquipKey: "20210104TST",
           },
         },
       })
       .then((data: any) => {
         this.list.data = data.result.Query;
         this.list.TotalCount = data.result.Page.all_count;
-        this.list.data.forEach((item:any) => {
-          item.ImageUrl = process.env.VUE_APP_SERVICE_URL +'/'+ item.ImageUrl;
-          item.CreateTime = dateFormat(new Date(item.CreateTime),'YYYY-MM-dd hh:mm')
+        this.list.data.forEach((item: any) => {
+          item.ImageUrl = process.env.VUE_APP_SERVICE_URL + "/" + item.ImageUrl;
+          item.CreateTime = this.formatDateTime(new Date(item.CreateTime));
         });
         this.settings.data = this.list.data;
       })
@@ -156,7 +171,7 @@ export default class Devices extends Vue {
       position: relative;
 
       &:not(:last-child)::before {
-        content: '';
+        content: "";
         width: 1px;
         height: 50%;
         background-color: $form-bd;

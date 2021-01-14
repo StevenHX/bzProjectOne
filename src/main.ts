@@ -18,7 +18,6 @@ import Open from '@/components/Open.vue';
 import LMenu from '@/components/LMenu.vue';
 import TableDrawer from "@/components/TableList/TableDrawer.vue";
 import TreeDrawer from "@/components/TableList/TreeDrawer.vue";
-import TableTree from "@/components/TableList/TableTree.vue";
 
 Vue.component('InsetBack', InsetBack);
 Vue.component('ViewAnim', ViewAnim);
@@ -28,7 +27,6 @@ Vue.component('Open', Open);
 Vue.component('LMenu', LMenu);
 Vue.component('TableDrawer', TableDrawer);
 Vue.component('TreeDrawer', TreeDrawer);
-Vue.component('TableTree', TableTree);
 
 // 同步路由状态到vuex中管理
 sync(store, router);

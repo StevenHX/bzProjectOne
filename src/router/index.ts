@@ -33,8 +33,8 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         login,
-        notFindPage,
         appRoutes,
+        notFindPage,
     ],
     scrollBehavior (to, from, savedPosition) {
         if (savedPosition) {
