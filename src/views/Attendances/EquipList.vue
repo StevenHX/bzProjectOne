@@ -26,6 +26,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Getter, Action, Mutation, namespace } from 'vuex-class';
 import { api } from '@/api';
 import _ from 'lodash';
+import { getStorage, setStorage} from "@/util/utils";
 
 @Component({
   name: 'Devices',
@@ -108,8 +109,8 @@ export default class Devices extends Vue {
             PerNum: this.query.pageSize,
           },
           Query: {
-            CompanyID: 1,
-            EquipKey: '20210104TST',
+            CompanyID: getStorage('loginInfo').CompanyID,
+            EquipKey: process.env.VUE_APP_EQUIP,
           }
         }
       })

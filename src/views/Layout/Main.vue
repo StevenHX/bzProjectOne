@@ -7,11 +7,11 @@
             <div class="bz-aside-collapse" @click="onCollapse" :title="isCollapse?'展开':'收起'">
                 <i :class="['bz-aside-icon',isCollapse?'el-icon-s-unfold':'el-icon-s-fold']"></i>
             </div>
-            <div class="bz-user" v-if="LOGIN_INFO.CurrentLanguageName">
+            <div class="bz-user" v-if="loginInfo">
                     <el-dropdown @command="handleCommand">
                         <span class="el-dropdown-link">
                             <el-avatar  icon="el-icon-user-solid"></el-avatar>
-                            {{LOGIN_INFO.CurrentUserLoginInfo.NickName}}
+                            {{loginInfo.CompanyName}}
                             <i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
@@ -75,6 +75,7 @@
         public $refs!: {
             main: Container
         };
+        loginInfo:any = '';
         @State('LOGIN_INFO')
         LOGIN_INFO!: any;
 
@@ -178,6 +179,7 @@
         async handleCommand(commond:any) {
             if (commond === 'quit') {
                 setStorage('token','');
+                setStorage('loginInfo','');
                 this.$router.replace({ path: '/login'});
             }
         }
@@ -202,6 +204,7 @@
             await this.login();
             this.leftMenu = appRoutes.children;
             await this.manageRoleAuth();
+            this.loginInfo = getStorage('loginInfo');
             this.CurrentLanguageName = 1;
             this.loading.close();
             if(getStorage('token')) {
@@ -276,8 +279,8 @@
                         }
 
                         .el-dropdown-link {
-                            width: 120px;
-                            color: $grey-dark;
+                            width: 180px;
+                            color: $white;
                             cursor: pointer;
                             display: flex;
                             flex-direction: row;

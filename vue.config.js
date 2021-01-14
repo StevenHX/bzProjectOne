@@ -13,6 +13,12 @@ proxy[process.env['VUE_APP_SERVICE_PATH']] = {
     changeOrigin: true
 };
 
+proxy[process.env['VUE_APP_SERVICE_VIDEO_PATH']] = {
+    target: process.env['VUE_APP_SERVICE_VIDEO_URL'],
+    ws: true,
+    changeOrigin: true
+};
+
 config.devServer =  {
     proxy: proxy,
     port: 8080

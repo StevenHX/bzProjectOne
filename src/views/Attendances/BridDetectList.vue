@@ -15,6 +15,7 @@
       @on-enter-click="queryList"
       @on-clear-click="queryList"
       @onDownMp4="onDownMp4"
+      @onViewMp4="onViewMp4"
     >
       <template slot="left">
         <div class="l-t">驱鸟历史</div>
@@ -28,7 +29,10 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { Getter, Action, Mutation, namespace } from "vuex-class";
 import { api } from "@/api";
 import _ from "lodash";
-import { dateFormat } from "@/util/utils";
+import { getStorage, setStorage, dateFormat} from "@/util/utils";
+import { downloadFile} from '@/util';
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css';
 
 @Component({
   name: "Devices",
@@ -97,6 +101,12 @@ export default class Devices extends Vue {
             icon: "el-icon-download",
             circle: true,
           },
+          {
+            tip: "查看视频",
+            emit: "onViewMp4",
+            icon: "el-icon-view",
+            circle: true,
+          }
         ],
       },
     ],
@@ -104,6 +114,15 @@ export default class Devices extends Vue {
 
   onDownMp4(e: any) {
     console.log(e);
+    NProgress.start();
+    downloadFile('get','/big_buck_bunny.mp4','','test.mp4')
+    .finally(()=>{
+      NProgress.done();
+    });
+  }
+
+  onViewMp4(e:any) {
+    window.open("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
   }
 
   formatDateTime = function (date: any) {
@@ -131,8 +150,8 @@ export default class Devices extends Vue {
             PerNum: this.query.pageSize,
           },
           Query: {
-            CompanyID: 1,
-            EquipKey: "20210104TST",
+            CompanyID: getStorage('loginInfo').CompanyID,
+            EquipKey: process.env.VUE_APP_EQUIP,
           },
         },
       })
@@ -140,7 +159,7 @@ export default class Devices extends Vue {
         this.list.data = data.result.Query;
         this.list.TotalCount = data.result.Page.all_count;
         this.list.data.forEach((item: any) => {
-          item.ImageUrl = process.env.VUE_APP_SERVICE_URL + "/" + item.ImageUrl;
+          item.ImageUrl = process.env.VUE_APP_URL + "/" + item.ImageUrl;
           item.CreateTime = this.formatDateTime(new Date(item.CreateTime));
         });
         this.settings.data = this.list.data;

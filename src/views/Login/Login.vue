@@ -48,8 +48,8 @@
           }
           api.login(this.account,this.passWord)
           .then((res:any) =>{
-            console.log(res);
             setStorage('token','123')
+            setStorage('loginInfo',res.result)
             this.$router.replace({path: '/Attendances/EquipList'});
           })
         }

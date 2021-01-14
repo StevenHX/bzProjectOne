@@ -1,5 +1,6 @@
 import {Vue} from 'vue-property-decorator';
 import _ from 'lodash';
+import axios from 'axios';
 type options = {
     //树结构的子节点名称
     childList?: string,
@@ -201,6 +202,30 @@ const getKeyData = function (data: any, key: any) {
     return dataKey;
 };
 
+
+const downloadFile = function(method="post",url:string, params:any, fileName:string) {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: method,
+            url: url,
+            params: params,
+            responseType: 'blob'
+        })
+        .then(res => {
+            let blob = new Blob([res.data]);
+            let downloadElement = document.createElement("a");
+            let href = window.URL.createObjectURL(blob); //创建下载的链接
+            downloadElement.href = href;
+            downloadElement.download = fileName; //下载后文件名
+            document.body.appendChild(downloadElement);
+            downloadElement.click(); //点击下载
+            document.body.removeChild(downloadElement); //下载完成移除元素
+            window.URL.revokeObjectURL(href); //释放掉blob对象
+            resolve(res.data);
+        })
+    });
+}
+
 export {
     findComponentsDownward,
     findComponentUpward,
@@ -210,5 +235,6 @@ export {
     isObject,
     traverseArray,
     listIsCheck,
-    getKeyData
+    getKeyData,
+    downloadFile
 }
