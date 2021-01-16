@@ -49,10 +49,21 @@ function VideoReqUpload(opts?:AxiosRequestConfig) {
   });
   return (i as Promise<unknown>)
 }
+
+// 设置设备启停
+function SetEquipStatus(opts?:AxiosRequestConfig) {
+  let i = instance({
+    method: 'post',
+    url:  '/BSAPI/Action/SetEquipStatus',
+    opts: opts
+  });
+  return (i as Promise<unknown>)
+}
 export {
   login,
   GetEquipList,
   GetBridDetectList,
   GetPatrolList,
-  VideoReqUpload
+  VideoReqUpload,
+  SetEquipStatus
 };

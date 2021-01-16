@@ -110,7 +110,7 @@ export default class Devices extends Vue {
           },
           Query: {
             CompanyID: getStorage('loginInfo').CompanyID,
-            EquipKey: process.env.VUE_APP_EQUIP,
+            EquipKey: '',
           }
         }
       })

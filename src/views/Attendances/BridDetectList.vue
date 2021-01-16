@@ -17,6 +17,8 @@
       @onUpMp4="onUpMp4"
       @onDownMp4="onDownMp4"
       @onViewMp4="onViewMp4"
+      @onStartMachine="onStartMachine"
+      @onStopMachine="onStopMachine"
     >
       <template slot="left">
         <div class="l-t">驱鸟历史</div>
@@ -116,6 +118,25 @@ export default class Devices extends Vue {
           }
         ],
       },
+      {
+        data: "action",
+        name: "操作",
+        mold: "button",
+        items: [
+          {
+            tip: "启动",
+            emit: "onStartMachine",
+            icon: "el-icon-video-play",
+            circle: true,
+          },
+          {
+            tip: "停止",
+            emit: "onStopMachine",
+            icon: "el-icon-video-pause",
+            circle: true,
+          }
+        ],
+      }
     ],
   };
 
@@ -159,6 +180,51 @@ export default class Devices extends Vue {
   onViewMp4(e:any) {
     // window.open("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
     window.open(process.env.VUE_APP_URL + "/" + e.VideoUrl);
+  }
+
+  onStartMachine(e:any) {
+    api.SetEquipStatus({
+      data: {
+        RunStatus: 100,
+        EquipKey: process.env.VUE_APP_EQUIP
+      }
+    }).then((res:any) =>{
+      if (res.result.Result === 1) {
+         this.$notify({
+          title: '成功',
+          message: '启动成功',
+          type: 'success'
+        });
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: '启动失败'
+          });
+      }
+        this.queryList();
+    })
+  }
+  onStopMachine(e:any) {
+    api.SetEquipStatus({
+      data: {
+        RunStatus: 400,
+        EquipKey: process.env.VUE_APP_EQUIP
+      }
+    }).then((res:any) =>{
+      if (res.result.Result === 1) {
+         this.$notify({
+          title: '成功',
+          message: '停止成功',
+          type: 'success'
+        });
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: '停止失败'
+          });
+      }
+        this.queryList();
+    })
   }
 
   formatDateTime = function (date: any) {

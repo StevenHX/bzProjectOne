@@ -11,7 +11,7 @@ const getPath = function (path: string) {
 export default [
     {
         path: rootPath,
-        name: '后台管理模板',
+        name: 'iMESX8云监控平台',
         icon: 'el-icon-s-custom',
         meta: {
             isMenu: true,

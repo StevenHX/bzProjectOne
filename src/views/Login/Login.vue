@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-        <span>xxxx后台模板</span>
+        <span>iMESX8云监控平台</span>
         <div class="login-input">
             <div class="login-input-item">
                 <i class="el-icon-user"></i>

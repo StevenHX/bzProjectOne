@@ -118,10 +118,16 @@
                             <el-form-item v-for="ptem in res.items"
                                         :key="ptem.emit">
                                 <el-tooltip class="item" effect="dark" :content="ptem.tip" placement="top">
+                                  <template v-if="res.data === 'VideoUrl'">
                                     <el-button v-if="btem.VideoStatus === 1 && ptem.emit !== 'onUpMp4'" :type="ptem.type" @click="buttonChange($event,ptem,btem)" :icon="ptem.icon" :circle="ptem.circle">{{ptem.name}}
                                     </el-button>
                                     <el-button v-if="btem.VideoReqStatus !== 2 && btem.VideoStatus !== 1 && ptem.emit === 'onUpMp4'" :type="ptem.type" @click="buttonChange($event,ptem,btem)" :icon="ptem.icon" :circle="ptem.circle">{{ptem.name}}
                                     </el-button>
+                                  </template>
+                                  <template v-else>
+                                    <el-button :type="ptem.type" @click="buttonChange($event,ptem,btem)" :icon="ptem.icon" :circle="ptem.circle">{{ptem.name}}
+                                    </el-button>
+                                  </template>
                                 </el-tooltip>
                             </el-form-item>
                         </div>

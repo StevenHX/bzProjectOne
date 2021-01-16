@@ -11,10 +11,11 @@
                     <el-dropdown @command="handleCommand">
                         <span class="el-dropdown-link">
                             <el-avatar  icon="el-icon-user-solid"></el-avatar>
-                            {{loginInfo.CompanyName}}
+                            {{loginInfo.Name}}
                             <i class="el-icon-arrow-down el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item>{{loginInfo.CompanyName}}</el-dropdown-item>
                             <el-dropdown-item command="quit">退出</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -71,7 +72,7 @@
         components: {}
     })
     export default class Layout extends Vue {
-        appName:string = '后台管理模板'
+        appName:string = 'iMESX8云监控平台'
         public $refs!: {
             main: Container
         };
@@ -279,7 +280,8 @@
                         }
 
                         .el-dropdown-link {
-                            width: 180px;
+                            width: 100px;
+                            margin-left: 10px;
                             color: $white;
                             cursor: pointer;
                             display: flex;
