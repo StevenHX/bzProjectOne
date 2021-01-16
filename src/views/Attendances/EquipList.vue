@@ -13,6 +13,8 @@
       @on-change="queryList"
       @on-enter-click="queryList"
       @on-clear-click="queryList"
+      @onStartMachine="onStartMachine"
+      @onStopMachine="onStopMachine"
     >
       <template slot="left">
         <div class="l-t">设备管理</div>
@@ -27,6 +29,7 @@ import { Getter, Action, Mutation, namespace } from 'vuex-class';
 import { api } from '@/api';
 import _ from 'lodash';
 import { getStorage, setStorage} from "@/util/utils";
+import m from 'moment';
 
 @Component({
   name: 'Devices',
@@ -67,12 +70,6 @@ export default class Devices extends Vue {
     data: [],
     columns: [
       {
-        data: 'ID',
-        name: 'ID',
-        type: 'text',
-        readOnly: true,
-      },
-      {
         data: 'EquipName',
         name: '设备名称',
         type: 'text',
@@ -91,11 +88,74 @@ export default class Devices extends Vue {
         readOnly: true,
       },
       {
-        data: 'CompanyID',
-        name: '公司ID',
+        data: 'EquipRunStatus',
+        name: '设备运行状态',
         type: 'text',
         readOnly: true,
       },
+      {
+        data: 'EquipReqStatus',
+        name: '设备指令状态',
+        type: 'text',
+        readOnly: true,
+      },
+      {
+        data: 'HeartInfo',
+        name: '设备心跳信息',
+        type: 'text',
+        readOnly: true,
+      },
+      {
+        data: 'HeartTime',
+        name: '最近心跳时间',
+        type: 'text',
+        readOnly: true,
+      },
+      {
+        data: "action",
+        name: "操作",
+        mold: "button",
+        items: [
+          {
+            tip: "启动",
+            emit: "onStartMachine",
+            icon: "el-icon-video-play",
+            circle: true,
+          },
+          {
+            tip: "停止",
+            emit: "onStopMachine",
+            icon: "el-icon-video-pause",
+            circle: true,
+          }
+        ],
+      },
+      // {
+      //   data: "action2",
+      //   name: "驱鸟历史",
+      //   mold: "button",
+      //   items: [
+      //     {
+      //       tip: "查看驱鸟历史",
+      //       emit: "onOpenHistory",
+      //       icon: "el-icon-pie-chart",
+      //       circle: true,
+      //     }
+      //   ],
+      // },
+      // {
+      //   data: "action3",
+      //   name: "巡逻配置",
+      //   mold: "button",
+      //   items: [
+      //     {
+      //       tip: "查看巡逻配置",
+      //       emit: "onOpenPatrol",
+      //       icon: "el-icon-s-operation",
+      //       circle: true,
+      //     }
+      //   ],
+      // }
     ],
   };
 
@@ -116,12 +176,52 @@ export default class Devices extends Vue {
       })
       .then((data: any) => {
         this.list.data = data.result.Query;
+        this.list.data.forEach((item:any) => {
+          item.HeartTime =  item.HeartTime.replace('T','  ');
+        });
         this.list.TotalCount = data.result.Page.all_count;
         this.settings.data = this.list.data;
       })
       .finally(() => {
         this.loading = false;
       });
+  }
+
+  onStartMachine(e:any) {
+    this.SetEquipStatus(100)
+  }
+  onStopMachine(e:any) {
+    this.SetEquipStatus(400)
+  }
+
+  onOpenHistory(e:any) {
+    this.$router.push({path: '/Attendances/BridDetectList',query: { EquipKey: e.EquipKey }});
+  }
+
+  onOpenPatrol(e:any) {
+     this.$router.push({path: '/Attendances/PatrolList',query: { EquipKey: e.EquipKey }});
+  }
+  SetEquipStatus(status:any) {
+     api.SetEquipStatus({
+      data: {
+        RunStatus: status,
+        EquipKey: process.env.VUE_APP_EQUIP
+      }
+    }).then((res:any) =>{
+      if (res.result.Result === 1) {
+         this.$notify({
+          title: '成功',
+          message: status === 100 ? '启动成功':'停止成功',
+          type: 'success'
+        });
+        } else {
+          this.$notify.error({
+            title: '失败',
+            message: status === 100 ? '启动失败':'停止失败'
+          });
+      }
+        this.queryList();
+    })
   }
   mounted() {
     this.queryList();

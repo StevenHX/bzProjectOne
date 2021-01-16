@@ -24,10 +24,10 @@
                             <template v-if="item.type==='select'">
                                 <el-select v-model="query[item.key]" placeholder="请选择" filterable>
                                         <el-option
-                                            v-for="item in ENUMS"
-                                            :key="item.Code"
-                                            :label="item.Name"
-                                            :value="item.Code">
+                                            v-for="res in searchDevices"
+                                            :key="res.EquipKey"
+                                            :label="res.EquipName"
+                                            :value="res.EquipKey">
                                         </el-option>
                                 </el-select>
                             </template>
@@ -323,6 +323,14 @@
 
         @State('POSITION')
         POSITION!: any;
+
+       @Prop({
+            type: Array,
+            default: () => {
+                return [];
+            }
+        })
+        searchDevices!: any;
 
         @Prop({
             type: String,

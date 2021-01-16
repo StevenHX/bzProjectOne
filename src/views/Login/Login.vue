@@ -4,11 +4,11 @@
         <div class="login-input">
             <div class="login-input-item">
                 <i class="el-icon-user"></i>
-                <el-input v-model="account" placeholder="请输入内容"></el-input>
+                <el-input v-model="account" placeholder="请输入用户名" clearable></el-input>
             </div>
             <div class="login-input-item">
                 <i class="el-icon-lock"></i>
-                <el-input v-model="passWord" placeholder="请输入内容" type="password" show-password></el-input>
+                <el-input v-model="passWord" placeholder="请输入密码" type="password" show-password clearable></el-input>
             </div>
         </div>
         <el-button @click="clickLogin">登录</el-button>
@@ -89,6 +89,8 @@
             margin-top: 10px;
             ::v-deep .el-input__inner {
                 border-color: transparent !important;
+                background: transparent !important;
+                font-size: 16px;
             }
         }
         

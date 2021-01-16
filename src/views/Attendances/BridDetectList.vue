@@ -1,5 +1,6 @@
 <template>
   <div class="information">
+    <!-- <el-button @click="back">返回</el-button> -->
     <table-list
       ref="tableList"
       :settings="settings"
@@ -8,6 +9,7 @@
       :total="list.TotalCount"
       :pageNum="query.pageNum"
       :loading="loading"
+      :searchDevices=devices
       ListId="ID"
       v-model="query.pageSize"
       @on-search-click="queryList"
@@ -17,8 +19,6 @@
       @onUpMp4="onUpMp4"
       @onDownMp4="onDownMp4"
       @onViewMp4="onViewMp4"
-      @onStartMachine="onStartMachine"
-      @onStopMachine="onStopMachine"
     >
       <template slot="left">
         <div class="l-t">驱鸟历史</div>
@@ -36,6 +36,8 @@ import { getStorage, setStorage, dateFormat} from "@/util/utils";
 import { downloadFile} from '@/util';
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css';
+import m from 'moment';
+import router from '@/router';
 
 @Component({
   name: "Devices",
@@ -49,23 +51,33 @@ export default class Devices extends Vue {
   loading: boolean = false;
   deleteLoading: boolean = false;
   onToolLoading: boolean = false;
+  devices:any = [];
   searchSetting: any = [
-    // {
-    //   label: '人员编号',
-    //   placeholder: '请输入人员编号',
-    //   type: 'input',
-    //   key: 'userCode',
-    // },
-    // {
-    //   label: '姓名',
-    //   placeholder: '请输入姓名',
-    //   type: 'input',
-    //   key: 'userName',
-    // },
+    {
+      label: '设备',
+      placeholder: '请选择设备',
+      type: 'select',
+      key: 'EquipKey',
+    },
+    {
+      label: '开始时间',
+      placeholder: '请选择时间',
+      type: 'time',
+      key: 'BeginTime',
+    },
+    {
+      label: '结束时间',
+      placeholder: '请选择时间',
+      type: 'time',
+      key: 'EndTime',
+    },
   ];
   query: any = {
     pageNum: 1,
     pageSize: 20,
+    EquipKey: '',
+    BeginTime: '',
+    EndTime: ''
   };
 
   list: any = {
@@ -76,12 +88,6 @@ export default class Devices extends Vue {
     data: [],
     columns: [
       {
-        data: "ID",
-        name: "ID",
-        type: "text",
-        readOnly: true,
-      },
-      {
         data: "CreateTime",
         name: "创建时间",
         type: "text",
@@ -91,6 +97,18 @@ export default class Devices extends Vue {
         data: "ImageUrl",
         name: "图像",
         mold: "img",
+        readOnly: true,
+      },
+      {
+        data: "HAngle",
+        name: "水平角度",
+        type: "text",
+        readOnly: true,
+      },
+      {
+        data: "VAngle",
+        name: "垂直角度",
+        type: "text",
         readOnly: true,
       },
       {
@@ -117,28 +135,13 @@ export default class Devices extends Vue {
             circle: true,
           }
         ],
-      },
-      {
-        data: "action",
-        name: "操作",
-        mold: "button",
-        items: [
-          {
-            tip: "启动",
-            emit: "onStartMachine",
-            icon: "el-icon-video-play",
-            circle: true,
-          },
-          {
-            tip: "停止",
-            emit: "onStopMachine",
-            icon: "el-icon-video-pause",
-            circle: true,
-          }
-        ],
       }
     ],
   };
+
+  back(){
+    this.$router.back()
+  }
 
   onUpMp4(e:any) {
     api.VideoReqUpload({
@@ -182,65 +185,6 @@ export default class Devices extends Vue {
     window.open(process.env.VUE_APP_URL + "/" + e.VideoUrl);
   }
 
-  onStartMachine(e:any) {
-    api.SetEquipStatus({
-      data: {
-        RunStatus: 100,
-        EquipKey: process.env.VUE_APP_EQUIP
-      }
-    }).then((res:any) =>{
-      if (res.result.Result === 1) {
-         this.$notify({
-          title: '成功',
-          message: '启动成功',
-          type: 'success'
-        });
-        } else {
-          this.$notify.error({
-            title: '失败',
-            message: '启动失败'
-          });
-      }
-        this.queryList();
-    })
-  }
-  onStopMachine(e:any) {
-    api.SetEquipStatus({
-      data: {
-        RunStatus: 400,
-        EquipKey: process.env.VUE_APP_EQUIP
-      }
-    }).then((res:any) =>{
-      if (res.result.Result === 1) {
-         this.$notify({
-          title: '成功',
-          message: '停止成功',
-          type: 'success'
-        });
-        } else {
-          this.$notify.error({
-            title: '失败',
-            message: '停止失败'
-          });
-      }
-        this.queryList();
-    })
-  }
-
-  formatDateTime = function (date: any) {
-    var y = date.getFullYear();
-    var m = date.getMonth() + 1;
-    m = m < 10 ? "0" + m : m;
-    var d = date.getDate();
-    d = d < 10 ? "0" + d : d;
-    var h = date.getHours();
-    h = h < 10 ? "0" + h : h;
-    var minute = date.getMinutes();
-    minute = minute < 10 ? "0" + minute : minute;
-    var second = date.getSeconds();
-    second = second < 10 ? "0" + second : second;
-    return y + "-" + m + "-" + d + " " + h + ":" + minute + ":" + second;
-  };
   async queryList(pageNum?: any) {
     this.loading = true;
     this.query.pageNum = pageNum ? pageNum : 1;
@@ -252,8 +196,9 @@ export default class Devices extends Vue {
             PerNum: this.query.pageSize,
           },
           Query: {
-            CompanyID: getStorage('loginInfo').CompanyID,
-            EquipKey: process.env.VUE_APP_EQUIP,
+            EquipKey: this.query.EquipKey,
+            BeginTime: this.query.BeginTime,
+            EndTime: this.query.EndTime
           },
         },
       })
@@ -262,7 +207,7 @@ export default class Devices extends Vue {
         this.list.TotalCount = data.result.Page.all_count;
         this.list.data.forEach((item: any) => {
           item.ImageUrl = process.env.VUE_APP_URL + "/" + item.ImageUrl;
-          item.CreateTime = this.formatDateTime(new Date(item.CreateTime));
+          item.CreateTime =  item.CreateTime.replace('T','  ');
         });
         this.settings.data = this.list.data;
       })
@@ -270,8 +215,28 @@ export default class Devices extends Vue {
         this.loading = false;
       });
   }
-  mounted() {
-    this.queryList();
+
+  async getDevices() {
+    await api.GetEquipList({
+        data: {
+          Page: {
+            PageNum: this.query.pageNum,
+            PerNum: 9999,
+          },
+          Query: {
+            CompanyID: getStorage('loginInfo').CompanyID,
+            EquipKey: '',
+          }
+        }
+      })
+      .then((data: any) => {
+        this.devices = data.result.Query;
+      });
+  }
+
+  async mounted() {
+    // this.queryList();
+    this.getDevices();
   }
 }
 </script>

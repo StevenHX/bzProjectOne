@@ -1,5 +1,6 @@
 <template>
   <div class="information">
+    <!-- <el-button @click="back">返回</el-button> -->
     <table-list
       ref="tableList"
       :settings="settings"
@@ -7,6 +8,7 @@
       :query="query"
       :total="list.TotalCount"
       :pageNum="query.pageNum"
+      :searchDevices=devices
       :loading="loading"
       v-model="query.pageSize"
       @on-search-click="queryList"
@@ -40,13 +42,14 @@ export default class Devices extends Vue {
   loading: boolean = false;
   deleteLoading: boolean = false;
   onToolLoading: boolean = false;
+  devices:any = [];
   searchSetting: any = [
-    // {
-    //   label: '人员编号',
-    //   placeholder: '请输入人员编号',
-    //   type: 'input',
-    //   key: 'userCode',
-    // },
+   {
+      label: '设备',
+      placeholder: '请选择设备',
+      type: 'select',
+      key: 'EquipKey',
+    },
     // {
     //   label: '姓名',
     //   placeholder: '请输入姓名',
@@ -57,6 +60,7 @@ export default class Devices extends Vue {
   query: any = {
     pageNum: 1,
     pageSize: 20,
+    EquipKey: ''
   };
 
   list: any = {
@@ -104,7 +108,9 @@ export default class Devices extends Vue {
       // }
     ],
   };
-
+ back(){
+    this.$router.back()
+  }
   async queryList(pageNum?: any) {
     this.loading = true;
     this.query.pageNum = pageNum ? pageNum : 1;
@@ -115,8 +121,8 @@ export default class Devices extends Vue {
             PerNum: this.query.pageSize,
           },
           Query: {
-            CompanyID: getStorage('loginInfo').CompanyID,
-            EquipKey: process.env.VUE_APP_EQUIP,
+            // CompanyID: getStorage('loginInfo').CompanyID,
+            EquipKey: this.query.EquipKey,
           },
         },
       })
@@ -129,8 +135,27 @@ export default class Devices extends Vue {
         this.loading = false;
       });
   }
+
+   async getDevices() {
+    await api.GetEquipList({
+        data: {
+          Page: {
+            PageNum: this.query.pageNum,
+            PerNum: 9999,
+          },
+          Query: {
+            CompanyID: getStorage('loginInfo').CompanyID,
+            EquipKey: '',
+          }
+        }
+      })
+      .then((data: any) => {
+        this.devices = data.result.Query;
+      });
+  }
   mounted() {
-    this.queryList();
+    // this.queryList();
+    this.getDevices();
   }
 }
 </script>
