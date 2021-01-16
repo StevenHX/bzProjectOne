@@ -161,7 +161,7 @@
                                         :disabled="!res.isEdit"
                                         @change="selChange($event,res,btem)">
                                     <el-option
-                                            v-for="item in res.dataEnum?ENUMS[res.dataEnum]:[]"
+                                            v-for="item in res.dataEnum?/*todo*/[res.dataEnum]:[]"
                                             :key="item.Code"
                                             :label="item.Name"
                                             :value="item.Code">
@@ -186,24 +186,6 @@
                                         :clearable="true"
                                         :disabled="!res.isEdit">
                                     </el-date-picker>
-                            </el-form-item>
-                        </div>
-                    </div>
-                    <div v-for="(res, index) in columnsSub('radio')" :key="'res.data____' + index">
-                        <div v-for="(btem,index) in hotSettings.data"
-                            :key="'btem.Id__' + index"
-                            :ref="res.data+btem[ListId]"
-                            :disabled="!res.isEdit">
-                            <label v-if="!res.isEdit">{{btem[res.data] === '1'? '是':'否'}}</label>
-                            <el-form-item
-                                    :prop="res.isVerify?('data.' + index + '.'+[res.data]):''"
-                                    :rules="{required: true, validator: res.validator||undefined, trigger: 'change'}"
-                                    v-if="res.isEdit">
-                                <el-radio-group v-model="btem[res.data]" @change="radioChange($event,res,btem)">
-                                    <el-radio v-for="(item,index) in res.items" :key="'radio_' + index" :label="item.value">
-                                        {{item.label}}
-                                    </el-radio>
-                                </el-radio-group>
                             </el-form-item>
                         </div>
                     </div>
@@ -239,19 +221,6 @@
                             </el-form-item>
                         </div>
                     </div>
-                    <div v-for="(res, index) in columnsSub('bili')" :key="'res.data_______' + index">
-                        <div v-for="(btem,index) in hotSettings.data"
-                            :key="'btem.Id__' + index"
-                            :ref="res.data+btem[ListId]"
-                            :disabled="!res.isEdit"
-                            style="display:flex; justify-content:center;align-items:center">
-                            <el-form-item
-                                    :prop="res.isVerify?('data.' + index + '.'+[res.data]):''"
-                                    :rules="{required: true, validator: res.validator||undefined, trigger: 'change'}">
-                                    <span>{{btem[res.data]}} / {{btem[res.data2]}}</span>
-                            </el-form-item>
-                        </div>
-                    </div>
                     <div v-for="(res, index) in columnsSub('link')" :key="'res.data_________' + index">
                         <div v-for="(btem,index) in hotSettings.data"
                             :key="'btem.Id__' + index"
@@ -268,20 +237,6 @@
                     </div>
                 </div>
             </el-form>
-        </div>
-        <div class="bz-table-drawer" v-if="true">
-            <table-drawer
-                :isAddDrawer="isAddDrawer"
-                :formDrawerOpen="formDrawerOpen"
-                :formDrawerSize="formDrawerSize"
-                :formDrawerlabel="formDrawerlabel"
-                :formDrawerRow="formDrawerRow"
-                :formDrawerData="formDrawerData"
-                @on-drawer-row-change="onDrawerRowChange"
-                @on-drawer-close="onDrawerClose"
-                @on-drawer-save="onDrawerSave"
-                @buttons-emit="onButtonsEmit">
-            </table-drawer>
         </div>
     </div>
 </template>
@@ -305,8 +260,7 @@
         public $refs!: {
             search: HTMLFormElement,
             bzHot: HTMLFormElement,
-            tableForm: HTMLFormElement,
-            cascader: HTMLFormElement
+            tableForm: HTMLFormElement
         };
 
         rightImgurl:string = require("@/assets/images/right.png");
@@ -314,15 +268,6 @@
         warnImgurl:string = require("@/assets/images/warn.png");
 
         field: any = {};
-
-        @State('ENUMS')
-        ENUMS!: any;
-
-        @State('ORG')
-        ORG!: any;
-
-        @State('POSITION')
-        POSITION!: any;
 
        @Prop({
             type: Array,
@@ -449,20 +394,7 @@
             }
         })
         savekey!: any;
-
-        //保存编辑抽屉规格
-        @Prop({
-            type: String,
-            default: '360px'
-        })
-        formDrawerSize!: any;
-
-        @Prop({
-            type: String,
-            default: '80px'
-        })
-        formDrawerlabel!: string;
-
+        
         values: any = '';
         isEdit: boolean = false;
         pageSize: number = 10;
@@ -470,37 +402,8 @@
         root: string = 'bz-hot';
         isCheckAll: boolean = false;
         hotSettings: any = {};
-        cascaderList: any = {};
-        contain: any = ['button', 'cascader'];
+        contain: any = ['button'];
         editIds: any = [];
-        isAddDrawer: boolean = false;
-        formDrawerOpen: boolean = false;
-        formDrawerRow: any = {};
-        formDrawerData: any = {};
-
-        //关闭抽屉
-        onDrawerClose() {
-            this.formDrawerOpen = false;
-            this.isAddDrawer = false;
-            this.formDrawerRow = {};
-            this.formDrawerData = {};
-        }
-
-        //保存抽屉
-        onDrawerSave() {
-            this.onDrawerClose();
-            this.$emit('on-drawer-save');
-            this.$emit('on-search-click', this.selfPageNum)
-        }
-
-        //抽屉操作
-        onDrawerRowChange(formItem: any, row: any, event: any) {
-            this.$emit(row.emit, formItem, row, event);
-        }
-        // 抽屉按钮点击事件
-        onButtonsEmit(emit:any, item:any) {
-            this.$emit(emit,item);
-        }
 
         columnsSub(type: string) {
             let ary: any = this.hotSettings.columns.filter((item: any) => {
@@ -689,19 +592,8 @@
             return listIsCheck(this.hotSettings.data, key);
         }
 
-        // 打开侧边栏
-        openDrawer(isAdd:boolean, row: any,item:any) {
-            this.isAddDrawer = isAdd;
-            this.formDrawerOpen = true;
-            this.formDrawerRow = row;
-            this.formDrawerData = item;
-        }
-
         //按钮
         buttonChange(v: any, row: any, item: any) {
-            if (row.setting) {
-                this.openDrawer(false,row,item);
-            }
             this.$emit(row.emit, item);
         }
 
@@ -847,34 +739,6 @@
                     }
                 },//右键菜单
                 manualColumnResize: true,//手工更改列距
-                // cells: function (row:any, col:any, prop:any) {
-                //     console.log(row,col,prop)
-                //     let cellProperties:any = {}
-                //
-                //     if (row === 0 && col === 0) {
-                //         cellProperties.readOnly = true;
-                //     }
-                //
-                //     return cellProperties;
-                // }
-                //fillHandle: 'vertical', //选中拖拽复制 possible values: true, false, "horizontal", "vertical"
-                // cell: [
-                //     {row:0, col:0, className: 'htCenter'}, // 右对齐垂直居中，只读
-                // ]
-                //currentRowClassName: 'currentRow', //为选中行添加类名，可以更改样式
-                //currentColClassName: 'currentCol',//为选中列添加类名
-                //fixedColumnsLeft: 0,//固定左边列数
-                //fixedRowsTop: 0,//固定上边列数
-                //mergeCells: [   //合并
-                //    {row: 1, col: 1, rowspan: 3, colspan: 3},  //指定合并，从（1,1）开始行3列3合并成一格
-                //    {row: 3, col: 4, rowspan: 2, colspan: 2}
-                //],
-                // manualColumnFreeze: true, //手动固定列
-                // manualColumnMove: true, //手动移动列
-                // manualRowMove: true,   //手动移动行
-                // manualRowResize: true,//手动更改行距
-                //comments: true, //添加注释
-                //customBorders:[],//添加边框
             };
         }
     }

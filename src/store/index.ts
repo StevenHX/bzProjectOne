@@ -15,11 +15,6 @@ class VuexStore extends VuexModule {
     public CACHVIEWS: any[] = [];
     public BREADCRUMBS: any[] = [];
     //@ts-ignore
-    public LOGIN_INFO: sys.loginInfo = {};
-    //系统枚举值
-    public ENUMS: any[] = [];
-    public ORG: any[] = [];
-
     public get getBreadcrumbs() {
         return this.BREADCRUMBS;
     }
@@ -65,35 +60,6 @@ class VuexStore extends VuexModule {
         this.CACHVIEWS  = info;
     }
 
-    @Mutation
-    public setLoginInfo(info: any = {}) {
-        this.LOGIN_INFO = info;
-    }
-
-    @Mutation
-    setEnums(info: any) {//更新枚举信息
-        this.ENUMS = info;
-    }
-
-    @Mutation
-    setOrg(info: any) {
-        this.ORG = info;
-    }
-
-    @Action({rawError: true})
-    public async syncEnum() {
-        this.context.commit('setEnums', '')
-    }
-
-    @Action({rawError: true})
-    public async syncOrg() {
-        this.context.commit('setOrg', '')
-    }
-
-    @Action({rawError: true})
-    public async syncLoginInfo() {
-        this.context.commit('setLoginInfo', '')
-    }
 }
 
 const store = new Vuex.Store(Object.assign({

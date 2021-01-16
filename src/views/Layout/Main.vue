@@ -77,14 +77,9 @@
             main: Container
         };
         loginInfo:any = '';
-        @State('LOGIN_INFO')
-        LOGIN_INFO!: any;
 
         @Getter('getBreadcrumbs')
         getBreadcrumbs: any;
-
-        @Action('syncLoginInfo')
-        syncLoginInfo!: Function;
 
         @Watch('$route', {
             immediate: true
@@ -165,7 +160,7 @@
             this.$router.addRoutes([]);
             let leftAry = _.cloneDeep(this.leftMenu[0].children);
             let needAry: any[] = [];
-            let grantedPermissions = this.LOGIN_INFO.GrantedPermissions;
+            let grantedPermissions = [];// todo
             leftAry.forEach(function(item:any) {
                 if (item.meta.needAuth) {
                     // todo
